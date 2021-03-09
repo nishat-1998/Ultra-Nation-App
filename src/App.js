@@ -1,42 +1,38 @@
-import React ,{useState , useEffect} from 'react';
-import logo from './logo.svg';
+import React from 'react-router-dom';
 import './App.css';
-import Country from './components/country/country';
-import Cart from './components/country/Cart/cart';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  
+} from "react-router-dom";
+import Home from  './components/Home/Home';
+import NoMatch from './components/NoMatch/NoMatch';
+import CountryDetail from './components/CountryDetail/CountryDetail';
 
 function App(){
- const [countries,setCountries]= useState([]);
- const [cart,setCart]=useState([]);
-useEffect(() => {
- fetch('https://restcountries.eu/rest/v2/all')
- .then (res=> res.json())
- .then(data=>{
-  setCountries(data);
-  //console.log(data);
-  //const names=data.map(country =>country.name);
-  //console.log(names);
- })
- 
-},[])
-
-const handleAddCountry=(country)=>{
-  const newCart =[...cart,country];
-  setCart(newCart);
-}
 
   return (
-    <div className="App">
-      <h1>Country Loaded:{countries.length}</h1>
-      <h4>Country Added:{cart.length}</h4>
-      <Cart cart={cart}></Cart>
-
-      <ul>
-  {
-    countries.map(country=><Country country={country} handleAddCountry={handleAddCountry} key={country.alpha3Code}></Country>) 
-  }
-      </ul>
-     
-       </div>
+    
+            
+<Router>
+      <Switch>
+        <Route path="/home">
+          <Home/>
+        </Route>
+        <Route path="/country/:countryName">
+       <CountryDetail/>
+        </Route>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="*">
+            <NoMatch />
+          </Route>
+      </Switch>
+    </Router>
+           
+      
   );
 }
 
